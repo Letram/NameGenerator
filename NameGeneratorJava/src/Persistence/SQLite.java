@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class SQLite {
-    public Connection connect(){
+    public static Connection connect(){
         String url = "jdbc:sqlite:../names.db";
         Connection conn = null;
         try {
@@ -68,5 +68,26 @@ public class SQLite {
             }
         }
         return true;
+    }
+
+    public static int getCount(String tableName) {
+        Connection connection = connect();
+        int res = -1;
+        if(connection != null){
+            try {
+                Statement statement = connection.createStatement();
+                String query = "SELECT COUNT(*) FROM " + tableName;
+                ResultSet resultSet = statement.executeQuery(query);
+                res = resultSet.getInt(1);
+
+                resultSet.close();
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return res;
+            }
+        }
+        return res;
     }
 }

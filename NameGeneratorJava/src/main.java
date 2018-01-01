@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class main {
-    static SQLite sqLite = new SQLite();
+    private static SQLite sqLite = new SQLite();
 
     public static void main(String[] args) {
         JFrame mainFrame = new JFrame("Name generator");
@@ -47,11 +47,14 @@ public class main {
                         .showConfirmDialog(null, inputs, "Insert to database", JOptionPane.PLAIN_MESSAGE);
                 if (result == JOptionPane.OK_OPTION) {
                     insertData(firstName.getText(), lastName.getText());
+                    view.reloadStats();
                 }
             }
         });
-        mainFrame.add(generateNameButton, BorderLayout.CENTER);
-        mainFrame.add(addToDatabaseButton, BorderLayout.SOUTH);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(generateNameButton);
+        buttonPanel.add(addToDatabaseButton);
+        mainFrame.add(buttonPanel, BorderLayout.SOUTH);
         mainFrame.pack();
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
