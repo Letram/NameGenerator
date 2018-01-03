@@ -2,11 +2,11 @@ import Controller.FullNameController;
 import Model.FullName;
 import Persistence.SQLite;
 import View.FullNameView;
-import java.sql.*;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.List;
 
 public class main {
@@ -23,32 +23,26 @@ public class main {
         mainFrame.add(view, BorderLayout.NORTH);
 
         JButton generateNameButton = new JButton("Generate!");
-        generateNameButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                FullName model = retrieveNewFullName();
-                controller.setFullName(model);
-                controller.updateView();
-            }
+        generateNameButton.addActionListener(e -> {
+            FullName model1 = retrieveNewFullName();
+            controller.setFullName(model1);
+            controller.updateView();
         });
         JButton addToDatabaseButton = new JButton("Insert new names / lastnames");
-        addToDatabaseButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JTextField firstName = new JTextField();
-                JTextField lastName = new JTextField();
-                final JComponent[] inputs = new JComponent[] {
-                        new JLabel("Name"),
-                        firstName,
-                        new JLabel("Lastname"),
-                        lastName,
-                };
-                int result = JOptionPane
-                        .showConfirmDialog(null, inputs, "Insert to database", JOptionPane.PLAIN_MESSAGE);
-                if (result == JOptionPane.OK_OPTION) {
-                    insertData(firstName.getText(), lastName.getText());
-                    view.reloadStats();
-                }
+        addToDatabaseButton.addActionListener(e -> {
+            JTextField firstName = new JTextField();
+            JTextField lastName = new JTextField();
+            final JComponent[] inputs = new JComponent[] {
+                    new JLabel("Name"),
+                    firstName,
+                    new JLabel("Lastname"),
+                    lastName,
+            };
+            int result = JOptionPane
+                    .showConfirmDialog(null, inputs, "Insert to database", JOptionPane.PLAIN_MESSAGE);
+            if (result == JOptionPane.OK_OPTION) {
+                insertData(firstName.getText(), lastName.getText());
+                view.reloadStats();
             }
         });
         JPanel buttonPanel = new JPanel();
@@ -64,7 +58,7 @@ public class main {
         FullName fullName = new FullName();
         Statement statement;
         try{
-            Connection connection = sqLite.connect();
+            Connection connection = SQLite.connect();
             statement = connection.createStatement();
 
             List<String> randomFullName = sqLite.getRandomFullName(connection, statement);

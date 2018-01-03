@@ -2,8 +2,15 @@ package Persistence;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SQLite {
+    Connection connection;
+
+    public SQLite() {
+        connection = connect();
+    }
+
     public static Connection connect(){
         String url = "jdbc:sqlite:../names.db";
         Connection conn = null;
@@ -89,5 +96,22 @@ public class SQLite {
             }
         }
         return res;
+    }
+
+    public Object[] getAll(String tableName) throws SQLException {
+        if (connection != null){
+            ArrayList res = new ArrayList();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = null;
+            if(tableName.equals("names")){
+                resultSet = statement.executeQuery("SELECT DISTINCT * FROM " + tableName + " ORDER BY NAME ASC ");
+            }
+            else resultSet = statement.executeQuery("SELECT DISTINCT * FROM " + tableName + " ORDER BY LASTNAME ASC ");
+            do {
+                res.add(resultSet.getString(1));
+            }while (resultSet.next());
+            return res.toArray();
+        }
+        return null;
     }
 }

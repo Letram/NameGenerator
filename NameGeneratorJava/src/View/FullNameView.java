@@ -4,15 +4,16 @@ import Persistence.SQLite;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class FullNameView extends JPanel {
 
     private JTextField nameField;
     private JTextField lastNameField;
-    private JPanel statsPanel;
     private JLabel nameCount;
     private JLabel lastnameCount;
-    private JPanel nameGeneratorPanel;
+
     public FullNameView() {
         JLabel nameLabel = new JLabel("Name: ");
         JLabel lastNameLabel = new JLabel("Lastname: ");
@@ -20,18 +21,20 @@ public class FullNameView extends JPanel {
         lastNameField = new JTextField();
         nameCount = new JLabel("nº of names: ");
         lastnameCount = new JLabel("nº of lastnames: ");
+        JPanel nameGeneratorPanel = new JPanel();
+        JPanel statsPanel = new JPanel();
 
+        nameCount.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        lastnameCount.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         nameField.setEditable(false);
         lastNameField.setEditable(false);
 
-        nameGeneratorPanel = new JPanel();
         nameGeneratorPanel.setLayout(new GridLayout(2,2));
         nameGeneratorPanel.add(nameLabel);
         nameGeneratorPanel.add(nameField);
         nameGeneratorPanel.add(lastNameLabel);
         nameGeneratorPanel.add(lastNameField);
 
-        statsPanel = new JPanel();
         statsPanel.setLayout(new GridLayout(2,1));
         statsPanel.add(nameCount);
         statsPanel.add(lastnameCount);
@@ -40,6 +43,19 @@ public class FullNameView extends JPanel {
         add(statsPanel);
 
         reloadStats();
+
+        nameCount.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new NameTableView("names").setVisible(true);
+            }
+        });
+        lastnameCount.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new NameTableView("lastnames").setVisible(true);
+            }
+        });
     }
 
     public void showFullName(String name, String lastName) {

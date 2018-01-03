@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="NameGeneratorJava:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/NameGeneratorJava_jar</output-path>
+    <root id="archive" name="NameGeneratorJava.jar">
+      <element id="module-output" name="NameGeneratorJava" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../sqlite-jdbc-3.21.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
